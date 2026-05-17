@@ -280,14 +280,14 @@ input::placeholder, textarea::placeholder {
 /* ── Buttons ────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-md);
-  font-size: 0.9rem; font-weight: 600;
+  padding: 0.8rem 1.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem; font-weight: 700;
   transition: all var(--transition-base);
   border: 1px solid transparent;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-pink));
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));
   color: white;
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
 }
@@ -637,8 +637,10 @@ input::placeholder, textarea::placeholder {
   border: 1px dashed var(--border-color);
   border-radius: var(--radius-xl);
   margin: 1rem 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.empty-state svg { width: 72px; height: 72px; margin-bottom: 1.25rem; opacity: 0.4; color: var(--accent-indigo); }
+.empty-state > svg { width: 72px; height: 72px; margin-bottom: 1.25rem; opacity: 0.4; color: var(--accent-indigo); }
+.empty-state .btn svg { width: 18px; height: 18px; margin-bottom: 0; opacity: 1; color: white; }
 .empty-state h3 { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700; }
 
 /* ── Loader ─────────────────────────────── */
