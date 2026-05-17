@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import Modal from '../components/Modal';
+import { useAuth } from '../context/AuthContext';
 
 const COLORS = ['#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#06b6d4', '#3b82f6', '#6366f1'];
 
 export default function Projects() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -37,10 +40,12 @@ export default function Projects() {
       <div className="topbar">
         <h2>Projects Workspace</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            New Project
-          </button>
+          {isAdmin && (
+            <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              New Project
+            </button>
+          )}
         </div>
       </div>
       <div className="page-content fade-in">
@@ -65,12 +70,16 @@ export default function Projects() {
         {projects.length === 0 ? (
           <div className="empty-state" style={{ maxWidth: 600, margin: '4rem auto' }}>
             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ margin: '0 auto 1.5rem', color: 'var(--accent-indigo)' }}><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-            <h3>No project boards created yet</h3>
-            <p style={{ marginBottom: '2rem' }}>Get your team aligned by creating your very first project board.</p>
-            <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              Create Project Board
-            </button>
+            <h3>{isAdmin ? 'No project boards created yet' : 'No projects assigned yet'}</h3>
+            <p style={{ marginBottom: '2rem' }}>
+              {isAdmin ? 'Get your team aligned by creating your very first project board.' : 'Projects assigned to you will appear here.'}
+            </p>
+            {isAdmin && (
+              <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Create Project Board
+              </button>
+            )}
           </div>
         ) : (
           <div className="projects-grid">

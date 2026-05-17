@@ -2,15 +2,20 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import Modal from '../components/Modal';
+import { useAuth } from '../context/AuthContext';
 
 export default function Team() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ email: '', role: 'MEMBER' });
   const [submitting, setSubmitting] = useState(false);
+
+  const myMembership = members.find(m => m.user.id === user?.id);
+  const isAdmin = user?.role === 'ADMIN' || myMembership?.role === 'ADMIN';
 
   const fetchMembers = () => {
     api.get(`/projects/${id}/members`).then(r => setMembers(r.data)).catch(console.error).finally(() => setLoading(false));
@@ -56,10 +61,12 @@ export default function Team() {
           </button>
           <h2>Team Access Management</h2>
         </div>
-        <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Add Team Member
-        </button>
+        {isAdmin && (
+          <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Team Member
+          </button>
+        )}
       </div>
       <div className="page-content fade-in">
         <div className="page-header">
@@ -80,12 +87,16 @@ export default function Team() {
                 </div>
                 <div className="member-actions">
                   <span className={`badge badge-${m.role.toLowerCase()}`}>{m.role}</span>
-                  <select value={m.role} onChange={(e) => handleRoleChange(m.id, e.target.value)}
-                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: 'var(--radius-sm)', padding: '0.4rem 0.75rem', fontSize: '0.85rem', fontWeight: 600, width: 'auto' }}>
-                    <option value="ADMIN">Admin Access</option>
-                    <option value="MEMBER">Member Access</option>
-                  </select>
-                  <button className="btn btn-ghost btn-sm" style={{ color: 'var(--accent-rose)', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-sm)' }} onClick={() => handleRemove(m.id)}>Revoke</button>
+                  {isAdmin && (
+                    <>
+                      <select value={m.role} onChange={(e) => handleRoleChange(m.id, e.target.value)}
+                        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: 'var(--radius-sm)', padding: '0.4rem 0.75rem', fontSize: '0.85rem', fontWeight: 600, width: 'auto' }}>
+                        <option value="ADMIN">Admin Access</option>
+                        <option value="MEMBER">Member Access</option>
+                      </select>
+                      <button className="btn btn-ghost btn-sm" style={{ color: 'var(--accent-rose)', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-sm)' }} onClick={() => handleRemove(m.id)}>Revoke</button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}

@@ -69,6 +69,9 @@ async def create_project(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    if current_user.role != RoleEnum.ADMIN:
+        raise HTTPException(status_code=403, detail="Only administrators can create new projects")
+
     project = Project(
         name=data.name,
         description=data.description,
