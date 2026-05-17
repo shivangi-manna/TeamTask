@@ -5,8 +5,7 @@
 ![React Vite](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
-> **🚀 Live Deployed Application:** [https://taskteam-production.up.railway.app/](https://taskteam-production.up.railway.app/)  
-> **📹 Demo Video (2-5 Min):** [Insert Demo Video Link Here]
+> **🚀 Live Deployed Application:** [https://taskteam-production.up.railway.app/](https://taskteam-production.up.railway.app/)
 
 ---
 

@@ -4,7 +4,6 @@
 
 LIVE DEPLOYMENT URL: https://taskteam-production.up.railway.app/
 GITHUB REPOSITORY:   https://github.com/shivangi-manna/TeamTask
-DEMO VIDEO (2-5 MIN): [Insert Demo Video Link Here]
 
 ================================================================================
 1. PROJECT OVERVIEW
